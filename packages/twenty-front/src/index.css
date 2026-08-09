@@ -32,6 +32,15 @@ form {
   opacity: var(--dnd-drag-feedback-opacity) !important;
 }
 
+[data-click-outside-id='navigation-drawer'] {
+  background: linear-gradient(
+    180deg,
+    #1b232c 0%,
+    #172029 45%,
+    #131920 100%
+  );
+}
+
 /* https://stackoverflow.com/questions/44543157/how-to-hide-the-google-invisible-recaptcha-badge */
 .grecaptcha-badge {
   visibility: hidden !important;
