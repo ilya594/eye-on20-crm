@@ -1,3 +1,4 @@
+import { App } from '@/app/components/App';
 import '@/app/utils/setupMonacoEnvironment';
 import { migrateTokenPairCookieToLocalStorage } from '@/auth/utils/migrateTokenPairCookieToLocalStorage';
 import { hydrateMetadataStore } from '@/metadata-store/storage/metadataStoreStorage';
@@ -18,10 +19,10 @@ import './index.css';
 migrateTokenPairCookieToLocalStorage();
 
 const renderApp = () => {
-  /* const root = ReactDOM.createRoot(
+  const root = ReactDOM.createRoot(
     document.getElementById('root') ?? document.body,
-  );*/
-  /*root.render(<App />);*/
+  );
+  root.render(<App />);
 };
 
 hydrateMetadataStore().then(renderApp, renderApp);
