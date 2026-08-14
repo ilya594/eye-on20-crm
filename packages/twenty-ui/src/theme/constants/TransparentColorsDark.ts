@@ -120,7 +120,7 @@ export const TRANSPARENT_COLORS_DARK = {
   yellow12: RadixColors.yellowDarkA.yellowA12,
 
   gray1: GRAY_SCALE_DARK_ALPHA.gray1,
-  gray2: GRAY_SCALE_DARK_ALPHA.gray2,
+  gray2: '#1e2c45',
   gray3: GRAY_SCALE_DARK_ALPHA.gray3,
   gray4: GRAY_SCALE_DARK_ALPHA.gray4,
   gray5: GRAY_SCALE_DARK_ALPHA.gray5,

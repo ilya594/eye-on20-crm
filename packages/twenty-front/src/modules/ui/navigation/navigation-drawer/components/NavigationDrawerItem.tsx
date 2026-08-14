@@ -21,12 +21,12 @@ import {
   TooltipDelay,
   TooltipPosition,
 } from 'twenty-ui/surfaces';
-import { Label } from 'twenty-ui/typography';
 import {
   MOBILE_VIEWPORT,
   ThemeContext,
   themeCssVariables,
 } from 'twenty-ui/theme-constants';
+import { Label } from 'twenty-ui/typography';
 import {
   type TriggerEventType,
   useMouseDownNavigation,
@@ -107,7 +107,7 @@ const StyledItem = styled.button<StyledItemProps>`
   display: flex;
   font-family: ${themeCssVariables.font.family};
   font-size: ${themeCssVariables.font.size.md};
-  height: ${themeCssVariables.spacing[7]};
+  height: '44px';
   margin-top: ${({ indentationLevel }) =>
     indentationLevel === 2 ? '2px' : '0'};
   min-width: 0;

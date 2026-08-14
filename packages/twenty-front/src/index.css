@@ -51,9 +51,7 @@ form {
 }
 
 html.dark {
+  --t-background-primary: #131920;
   --t-background-secondary: #182028;
-}
-
-html.dark {
   --t-background-tertiary: #131920;
 }
