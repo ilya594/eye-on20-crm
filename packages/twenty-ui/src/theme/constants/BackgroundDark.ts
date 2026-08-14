@@ -18,8 +18,10 @@ export const BACKGROUND_DARK = {
     secondary: RadixColors.blackP3A.blackA6,
     strong: TRANSPARENT_COLORS_DARK.gray7,
     medium: TRANSPARENT_COLORS_DARK.gray5,
-    light: TRANSPARENT_COLORS_DARK.gray2,
-    lighter: TRANSPARENT_COLORS_DARK.gray1,
+
+    light: '#1e2c45',
+    lighter: '#202a35',
+
     danger: TRANSPARENT_COLORS_DARK.red3,
     blue: TRANSPARENT_COLORS_DARK.blue4,
     orange: TRANSPARENT_COLORS_DARK.orange4,
