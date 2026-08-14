@@ -4,11 +4,12 @@ import { useAuth } from '@/auth/hooks/useAuth';
 import { availableWorkspacesState } from '@/auth/states/availableWorkspacesState';
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
 import { countAvailableWorkspaces } from '@/auth/utils/availableWorkspacesUtils';
-import { supportChatState } from '@/client-config/states/supportChatState';
 import { isMultiWorkspaceEnabledState } from '@/client-config/states/isMultiWorkspaceEnabledState';
+import { supportChatState } from '@/client-config/states/supportChatState';
 import { useBuildWorkspaceUrl } from '@/domain-manager/hooks/useBuildWorkspaceUrl';
 import { useRedirectToDefaultDomain } from '@/domain-manager/hooks/useRedirectToDefaultDomain';
 import { useRedirectToWorkspaceDomain } from '@/domain-manager/hooks/useRedirectToWorkspaceDomain';
+import { useOpenSettingsMenu } from '@/navigation/hooks/useOpenSettings';
 import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
 import { DropdownContent } from '@/ui/layout/dropdown/components/DropdownContent';
 import { DropdownMenuHeader } from '@/ui/layout/dropdown/components/DropdownMenuHeader/DropdownMenuHeader';
@@ -16,7 +17,6 @@ import { DropdownMenuHeaderLeftComponent } from '@/ui/layout/dropdown/components
 import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
 import { DropdownMenuSeparator } from '@/ui/layout/dropdown/components/DropdownMenuSeparator';
 import { useCloseDropdown } from '@/ui/layout/dropdown/hooks/useCloseDropdown';
-import { useOpenSettingsMenu } from '@/navigation/hooks/useOpenSettings';
 import { MULTI_WORKSPACE_DROPDOWN_ID } from '@/ui/navigation/navigation-drawer/constants/MultiWorkspaceDropdownId';
 import { multiWorkspaceDropdownState } from '@/ui/navigation/navigation-drawer/states/multiWorkspaceDropdownState';
 import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
@@ -24,7 +24,6 @@ import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomState
 import { useSetAtomState } from '@/ui/utilities/state/jotai/hooks/useSetAtomState';
 import { styled } from '@linaria/react';
 import { useLingui } from '@lingui/react/macro';
-import { themeCssVariables } from 'twenty-ui/theme-constants';
 import { isNonEmptyString } from '@sniptt/guards';
 import { AppPath, SettingsPath } from 'twenty-shared/types';
 import { getSettingsPath } from 'twenty-shared/utils';
@@ -44,6 +43,7 @@ import {
   MenuItemSelectAvatar,
   UndecoratedLink,
 } from 'twenty-ui/navigation';
+import { themeCssVariables } from 'twenty-ui/theme-constants';
 import { type AvailableWorkspace } from '~/generated-metadata/graphql';
 import { getWorkspaceUrl } from '~/utils/getWorkspaceUrl';
 import { getAbsoluteImageUrl } from '~/utils/image/getAbsoluteImageUrl';
@@ -192,17 +192,6 @@ export const MultiWorkspaceDropdownDefaultComponents = () => {
         </>
       )}
       <DropdownMenuItemsContainer>
-        <MenuItem
-          LeftIcon={colorSchemeList.find(({ id }) => id === colorScheme)?.icon}
-          text={
-            <>
-              {t`Theme `}
-              <StyledDescription>{` · ${colorScheme}`}</StyledDescription>
-            </>
-          }
-          hasSubMenu={true}
-          onClick={() => setMultiWorkspaceDropdown('themes')}
-        />
         <UndecoratedLink
           to={`${getSettingsPath(SettingsPath.WorkspaceMembersPage)}#invite`}
           onClick={() => {

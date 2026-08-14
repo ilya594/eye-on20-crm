@@ -170,6 +170,7 @@ export const NavigationMenuItemIcon = ({
     <StyledTintedIconTileContainer
       $backgroundColor={iconStyle.backgroundColor}
       $borderColor={iconStyle.borderColor}
+      $dimension="32px"
     >
       {avatar}
     </StyledTintedIconTileContainer>

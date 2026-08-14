@@ -63,11 +63,11 @@
   --t-spacing-32: 128px;
   --t-spacing-0_5: 2px;
   --t-spacing-1_5: 6px;
-  --t-between-siblings-gap: 2px;
+  --t-between-siblings-gap: 10px;
   --t-table-horizontal-cell-margin: 8px;
   --t-table-checkbox-column-width: 32px;
   --t-table-horizontal-cell-padding: 8px;
-  --t-side-panel-width: 500px;
+  --t-side-panel-width: 600px;
   --t-clickable-element-background-transition: background 0.1s ease;
   --t-last-layer-z-index: 2147483647;
   --t-buttons-secondary-text-color: color(display-p3 0.63 0.69 1);
