@@ -4,8 +4,6 @@ import { NavigationDrawerWorkspaceSectionSkeletonLoader } from '@/object-metadat
 import { styled } from '@linaria/react';
 import { lazy, Suspense } from 'react';
 
-import { themeCssVariables } from 'twenty-ui/theme-constants';
-
 const FavoritesSectionDispatcher = lazy(() =>
   import('@/navigation-menu-item/display/sections/favorites/components/FavoritesSectionDispatcher').then(
     (module) => ({
@@ -25,7 +23,7 @@ const WorkspaceSectionDispatcher = lazy(() =>
 const StyledScrollableItemsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${themeCssVariables.spacing[3]};
+  gap: 12px;
 `;
 
 export const MainNavigationDrawerScrollableItems = () => {

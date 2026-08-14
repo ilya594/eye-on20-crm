@@ -2,6 +2,6 @@ import { type ResizablePanelConstraints } from '@/ui/layout/resizable-panel/type
 
 export const SIDE_PANEL_CONSTRAINTS: ResizablePanelConstraints = {
   min: 320,
-  max: 600,
-  default: 400,
+  max: 900,
+  default: 600,
 };
