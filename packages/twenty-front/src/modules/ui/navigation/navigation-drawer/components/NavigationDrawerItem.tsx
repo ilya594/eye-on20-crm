@@ -198,7 +198,7 @@ const StyledIcon = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
   justify-content: center;
-  margin-right: ${themeCssVariables.spacing[2]};
+  margin-right: ${themeCssVariables.spacing[4]};
 `;
 
 const StyledIconBackgroundTile = styled.div`
