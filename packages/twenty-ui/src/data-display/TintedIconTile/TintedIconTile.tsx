@@ -19,7 +19,7 @@ export const TintedIconTile = ({
 }: TintedIconTileProps) => {
   const theme = useTheme();
   const style = getIconTileColorShades(color);
-  const iconSize = '32px'; //sizeFromProps ?? theme.icon.size.md;
+  const iconSize = '26px'; //sizeFromProps ?? theme.icon.size.md;
   const iconStroke = strokeFromProps ?? theme.icon.stroke.md;
   const tileDimension = '32px'; //isDefined(sizeFromProps)
   //  ? `${sizeFromProps}px`
