@@ -7,8 +7,8 @@ import { motion } from 'framer-motion';
 import React, { useContext } from 'react';
 import { isDefined } from 'twenty-shared/utils';
 import { IconChevronRight } from 'twenty-ui/icon';
-import { Label } from 'twenty-ui/typography';
 import { ThemeContext, themeCssVariables } from 'twenty-ui/theme-constants';
+import { Label } from 'twenty-ui/typography';
 
 const StyledTitle = styled.div`
   align-items: center;
@@ -97,7 +97,7 @@ export const NavigationDrawerSectionTitle = ({
   return (
     <StyledTitle className="section-title-container">
       <StyledLabelContainer onClick={handleTitleClick}>
-        <Label className="section-title-label">{label}</Label>
+        <Label className="section-title-label">{'_____________________'}</Label>
         {isOpen !== undefined && (
           <StyledChevron>
             <MotionIconChevronRight
