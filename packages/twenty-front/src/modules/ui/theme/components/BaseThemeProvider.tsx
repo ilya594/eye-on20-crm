@@ -26,11 +26,7 @@ export const BaseThemeProvider = ({ children }: BaseThemeProviderProps) => {
 
   return (
     <ThemeSchemeContext.Provider value={setPersistedColorScheme}>
-      <ThemeProvider
-        colorScheme={effectiveColorScheme === 'Dark' ? 'dark' : 'light'}
-      >
-        {children}
-      </ThemeProvider>
+      <ThemeProvider colorScheme={'dark'}>{children}</ThemeProvider>
     </ThemeSchemeContext.Provider>
   );
 };
