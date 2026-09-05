@@ -12,8 +12,8 @@ import { themeCssVariables } from 'twenty-ui/theme-constants';
 // ================================================================
 // ИМПОРТ Notification
 // ================================================================
-import Notification from '@/modules/ui/layout/modal/components/Notification';
-
+import Notification from '~/modules/ui/layout/modal/components/Notification';
+//packages\twenty-front\src\modules\ui\layout\modal\components\Notification.ts
 const StyledHeader = styled.div<{ centerTitle?: boolean }>`
   align-items: center;
   display: flex;
