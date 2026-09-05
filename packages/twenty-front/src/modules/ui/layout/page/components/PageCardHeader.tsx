@@ -1,21 +1,83 @@
-// Вставляем в PageCardHeader.tsx, добавляем новые импорты и логику
-
-//@ts-nocheck
-
 import { useNavigationDrawerExpanded } from '@/navigation/hooks/useNavigationDrawerExpanded';
 import { PAGE_ACTION_CONTAINER_CLICK_OUTSIDE_ID } from '@/ui/layout/page/constants/PageActionContainerClickOutsideId';
 import { Breadcrumb } from '@/ui/navigation/bread-crumb/components/Breadcrumb';
 import { NavigationDrawerCollapseButton } from '@/ui/navigation/navigation-drawer/components/NavigationDrawerCollapseButton';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
-import { StyledTitle } from '@/workflow/workflow-steps/workflow-actions/components/workflowRunStepLogsStyles';
 import { styled } from '@linaria/react';
-import { IconPhone } from '@tabler/icons-react'; // или любой другой иконка телефонного звонка
-import { useEffect, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { isDefined } from 'twenty-shared/utils';
+import { IconPhone } from 'twenty-ui/icon';
 import { themeCssVariables } from 'twenty-ui/theme-constants';
 
+const StyledHeader = styled.div<{ centerTitle?: boolean }>`
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: ${themeCssVariables.spacing[2]};
+  justify-content: space-between;
+  min-height: 40px;
+  padding: ${themeCssVariables.spacing[3]} ${themeCssVariables.spacing[3]}
+    ${themeCssVariables.spacing[3]} ${themeCssVariables.spacing[4]};
+  position: relative;
+  width: 100%;
+`;
+
+const StyledLeft = styled.div`
+  align-items: center;
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: row;
+  gap: ${themeCssVariables.spacing[1]};
+  min-width: 0;
+  overflow: hidden;
+`;
+
+const StyledRight = styled.div<{ centerTitle?: boolean }>`
+  align-items: center;
+  display: flex;
+  flex: 1 1 0;
+  gap: ${themeCssVariables.spacing[2]};
+  justify-content: flex-end;
+  min-width: 0;
+`;
+
+const StyledTitle = styled.div<{ titleColor?: string }>`
+  align-items: center;
+  color: ${({ titleColor }) =>
+    titleColor || themeCssVariables.font.color.primary};
+  display: flex;
+  flex-direction: row;
+  font-size: ${themeCssVariables.font.size.md};
+  font-weight: ${themeCssVariables.font.weight.medium};
+  gap: ${themeCssVariables.spacing[1]};
+  overflow: hidden;
+`;
+
+const StyledCenteredTitle = styled.div<{ titleColor?: string }>`
+  align-items: center;
+  color: ${({ titleColor }) =>
+    titleColor || themeCssVariables.font.color.primary};
+  display: flex;
+  font-size: ${themeCssVariables.font.size.md};
+  font-weight: ${themeCssVariables.font.weight.medium};
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+`;
+
+type PageCardHeaderProps = {
+  links?: Array<{ name: string; path?: string }>;
+  breadcrumb?: ReactNode;
+  icon?: ReactNode;
+  title?: ReactNode;
+  tag?: ReactNode;
+  actionButton?: ReactNode;
+  centerTitle?: boolean;
+  titleColor?: string;
+};
+
 // ================================================================
-// Стили для кнопки звонка
+// Стили кнопки
 // ================================================================
 const StyledCallButton = styled.button<{
   isRecording?: boolean;
@@ -29,68 +91,66 @@ const StyledCallButton = styled.button<{
   }};
   border: none;
   border-radius: 8px;
+  box-shadow: ${({ isRecording }) =>
+    isRecording ? '0 0 20px rgba(231, 76, 60, 0.4)' : 'none'};
   color: #ffffff;
   cursor: ${({ isModelReady }) => (isModelReady ? 'pointer' : 'not-allowed')};
   display: inline-flex;
+  font-size: ${themeCssVariables.font.size.md};
+  font-weight: ${themeCssVariables.font.weight.medium};
   gap: ${themeCssVariables.spacing[1]};
   height: 36px;
   justify-content: center;
-  align-items: center;
   opacity: ${({ isModelReady }) => (isModelReady ? 1 : 0.4)};
   padding: 0 ${themeCssVariables.spacing[3]};
-  transition: all 0.2s ease;
-  font-size: ${themeCssVariables.font.size.md};
-  font-weight: ${themeCssVariables.font.weight.medium};
-  box-shadow: ${({ isRecording }) =>
-    isRecording ? '0 0 20px rgba(231, 76, 60, 0.4)' : 'none'};
   position: relative;
+  transition: all 0.2s ease;
 
   &:hover {
-    transform: ${({ isModelReady }) => (isModelReady ? 'scale(1.02)' : 'none')};
     background: ${({ isRecording, isModelReady }) => {
       if (!isModelReady) return themeCssVariables.background.tertiary;
       if (isRecording) return '#c0392b';
       return '#2980b9';
     }};
+    transform: ${({ isModelReady }) => (isModelReady ? 'scale(1.02)' : 'none')};
   }
 
   &:active {
     transform: ${({ isModelReady }) => (isModelReady ? 'scale(0.97)' : 'none')};
   }
 
-  // Пульсирующий индикатор записи
   &::after {
+    animation: pulse-record 1s ease-in-out infinite;
+    background: #ff0000;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
     content: '';
     display: ${({ isRecording }) => (isRecording ? 'block' : 'none')};
-    position: absolute;
-    top: -4px;
-    right: -4px;
-    width: 12px;
     height: 12px;
-    background: #ff0000;
-    border-radius: 50%;
-    animation: pulse-record 1s ease-in-out infinite;
-    border: 2px solid #ffffff;
+    position: absolute;
+    right: -4px;
+    top: -4px;
+    width: 12px;
   }
 
   @keyframes pulse-record {
     0% {
-      transform: scale(1);
       opacity: 1;
+      transform: scale(1);
     }
     50% {
-      transform: scale(1.4);
       opacity: 0.6;
+      transform: scale(1.4);
     }
     100% {
-      transform: scale(1);
       opacity: 1;
+      transform: scale(1);
     }
   }
 `;
 
 // ================================================================
-// Хук для работы с распознаванием речи
+// Speech recognition
 // ================================================================
 interface TranscriberInstance {
   (audio: Float32Array, options?: any): Promise<{ text: string }>;
@@ -100,35 +160,31 @@ function useSpeechRecognition() {
   const [isModelReady, setIsModelReady] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
+  const [recordingSeconds, setRecordingSeconds] = useState(0);
 
   const transcriberRef = useRef<TranscriberInstance | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const streamRef = useRef<MediaStream | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Загрузка модели
   useEffect(() => {
     let cancelled = false;
 
     const loadModel = async () => {
       try {
-        // Динамический импорт transformers
-        const { pipeline } =
-          await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.4.0');
+        const { pipeline } = await import('@huggingface/transformers');
 
         if (cancelled) return;
 
         const transcriber = await pipeline(
           'automatic-speech-recognition',
           'Xenova/whisper-base',
-          {
-            // device: 'webgpu', // раскомментируй, если браузер поддерживает WebGPU
-            dtype: 'q8',
-          },
+          { dtype: 'q8' },
         );
 
         if (!cancelled) {
-          transcriberRef.current = transcriber;
+          transcriberRef.current = transcriber as TranscriberInstance;
           setIsModelReady(true);
           console.log('[Speech] Model ready');
         }
@@ -138,19 +194,18 @@ function useSpeechRecognition() {
     };
 
     loadModel();
-
     return () => {
       cancelled = true;
+      if (timerRef.current) clearInterval(timerRef.current);
     };
   }, []);
 
-  // Конвертация AudioBuffer в Float32Array
   const float32FromAudioBuffer = async (
     audioBuffer: AudioBuffer,
   ): Promise<Float32Array> => {
     const offlineCtx = new OfflineAudioContext(
       1,
-      audioBuffer.duration * 16000,
+      Math.ceil(audioBuffer.duration * 16000),
       16000,
     );
     const source = offlineCtx.createBufferSource();
@@ -161,7 +216,6 @@ function useSpeechRecognition() {
     return rendered.getChannelData(0);
   };
 
-  // Конвертация Blob в Float32Array
   const blobToFloat32 = async (blob: Blob): Promise<Float32Array> => {
     const arrayBuffer = await blob.arrayBuffer();
     const audioCtx = new AudioContext();
@@ -170,7 +224,14 @@ function useSpeechRecognition() {
     return float32FromAudioBuffer(audioBuffer);
   };
 
-  // Начать запись
+  const clearTimer = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    setRecordingSeconds(0);
+  };
+
   const startRecording = async () => {
     if (isRecording) return;
 
@@ -199,13 +260,16 @@ function useSpeechRecognition() {
 
       recorder.start();
       setIsRecording(true);
+      setRecordingSeconds(0);
+      timerRef.current = setInterval(() => {
+        setRecordingSeconds((s) => s + 1);
+      }, 1000);
       console.log('[Speech] Recording started');
     } catch (err) {
       console.error('[Speech] Failed to start recording:', err);
     }
   };
 
-  // Остановить запись и распознать
   const stopRecordingAndTranscribe = async () => {
     if (!isRecording || !mediaRecorderRef.current) return;
 
@@ -213,6 +277,7 @@ function useSpeechRecognition() {
       const recorder = mediaRecorderRef.current!;
 
       recorder.onstop = async () => {
+        clearTimer();
         setIsRecording(false);
         setIsTranscribing(true);
 
@@ -220,15 +285,12 @@ function useSpeechRecognition() {
           const blob = new Blob(chunksRef.current, { type: recorder.mimeType });
           chunksRef.current = [];
 
-          // Останавливаем все треки
           if (streamRef.current) {
             streamRef.current.getTracks().forEach((t) => t.stop());
             streamRef.current = null;
           }
 
           console.log('[Speech] Recording stopped, transcribing...');
-
-          // Декодируем и распознаём
           const audio = await blobToFloat32(blob);
 
           if (!transcriberRef.current) {
@@ -258,10 +320,10 @@ function useSpeechRecognition() {
     });
   };
 
-  // Прервать запись (без распознавания)
   const cancelRecording = () => {
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
+      clearTimer();
       setIsRecording(false);
 
       if (streamRef.current) {
@@ -275,10 +337,8 @@ function useSpeechRecognition() {
     }
   };
 
-  // Toggle: запись/остановка
   const toggleRecording = async () => {
     if (!isModelReady) return;
-
     if (isRecording) {
       await stopRecordingAndTranscribe();
     } else {
@@ -290,49 +350,42 @@ function useSpeechRecognition() {
     isModelReady,
     isRecording,
     isTranscribing,
+    recordingSeconds,
     toggleRecording,
     cancelRecording,
   };
 }
 
-// ================================================================
-// Компонент кнопки звонка
-// ================================================================
 const CallButton = () => {
   const {
     isModelReady,
     isRecording,
     isTranscribing,
+    recordingSeconds,
     toggleRecording,
-    cancelRecording,
   } = useSpeechRecognition();
-
-  const handleClick = () => {
-    toggleRecording();
-  };
-
-  const label = isRecording ? '⏹' : '🔊';
 
   return (
     <StyledCallButton
       isRecording={isRecording}
       isModelReady={isModelReady}
-      onClick={handleClick}
+      onClick={() => {
+        void toggleRecording();
+      }}
       disabled={!isModelReady || isTranscribing}
       title={isRecording ? 'Stop recording' : 'Start voice recording'}
+      type="button"
     >
       <IconPhone size={18} />
       {isRecording && (
-        <span style={{ marginLeft: 4 }}>
-          {Math.round((Date.now() / 1000) % 60)}s
-        </span>
+        <span style={{ marginLeft: 4 }}>{recordingSeconds}s</span>
       )}
     </StyledCallButton>
   );
 };
 
 // ================================================================
-// Модифицированный PageCardHeader
+// PageCardHeader
 // ================================================================
 export const PageCardHeader = ({
   links,
@@ -353,6 +406,7 @@ export const PageCardHeader = ({
 
   const titleContent = (
     <>
+      {isDefined(icon) && icon}
       {isDefined(title) && title}
       {tag}
     </>
