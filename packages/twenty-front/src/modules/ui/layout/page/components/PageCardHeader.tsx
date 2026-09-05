@@ -9,6 +9,11 @@ import { isDefined } from 'twenty-shared/utils';
 import { IconPhone } from 'twenty-ui/icon';
 import { themeCssVariables } from 'twenty-ui/theme-constants';
 
+// ================================================================
+// ИМПОРТ Notification
+// ================================================================
+import Notification from '@/modules/ui/layout/modal/components/Notification';
+
 const StyledHeader = styled.div<{ centerTitle?: boolean }>`
   align-items: center;
   display: flex;
@@ -182,8 +187,6 @@ function useSpeechRecognition() {
           'automatic-speech-recognition',
           'Xenova/whisper-base',
           {
-            // Без dtype - используется стандартная загрузка
-            // Или можно попробовать dtype: 'q4' для более легкой модели
             dtype: 'fp16',
           },
         );
@@ -311,9 +314,58 @@ function useSpeechRecognition() {
           });
 
           const text = (result?.text || '').trim();
-          console.log('[Speech] Transcription result:', text);
+
+          // ================================================================
+          // 🔥 ПОКАЗЫВАЕМ NOTIFICATION С РАСПОЗНАННЫМ ТЕКСТОМ
+          // ================================================================
+          if (text) {
+            console.log('[Speech] Transcription result:', text);
+
+            // Показываем уведомление с текстом на 30 секунд
+            await Notification.show(
+              `🎤 ${text}`,
+              'center-center',
+              30000, // 30 секунд
+              {
+                startIndex: 2, // Начинаем с эмодзи
+                fontSize: 22,
+                fontColor: '#67fe0f',
+                bold: true,
+                includeCopyBtn: true,
+              },
+              10, // Countdown с 10
+            );
+          } else {
+            // Если текст пустой — показываем другое уведомление
+            await Notification.show(
+              '🤷 Не удалось распознать речь',
+              'center-center',
+              5000,
+              {
+                startIndex: 0,
+                fontSize: 18,
+                fontColor: '#ff6b6b',
+                bold: false,
+              },
+              5,
+            );
+          }
         } catch (err) {
           console.error('[Speech] Transcription error:', err);
+
+          // Показываем ошибку
+          await Notification.show(
+            `❌ Ошибка: ${(err as Error).message || 'неизвестная ошибка'}`,
+            'center-center',
+            8000,
+            {
+              startIndex: 0,
+              fontSize: 16,
+              fontColor: '#ff6b6b',
+              bold: false,
+            },
+            8,
+          );
         } finally {
           setIsTranscribing(false);
           mediaRecorderRef.current = null;
