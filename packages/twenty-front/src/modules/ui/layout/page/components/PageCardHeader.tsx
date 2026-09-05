@@ -104,6 +104,7 @@ const StyledCallButton = styled.button<{
   opacity: ${({ isModelReady }) => (isModelReady ? 1 : 0.4)};
   padding: 0 ${themeCssVariables.spacing[3]};
   position: relative;
+  left: 30px;
   transition: all 0.2s ease;
 
   &:hover {
@@ -183,7 +184,7 @@ function useSpeechRecognition() {
           {
             // Без dtype - используется стандартная загрузка
             // Или можно попробовать dtype: 'q4' для более легкой модели
-            // dtype: 'q4',
+            dtype: 'fp16',
           },
         );
 
@@ -410,7 +411,6 @@ export const PageCardHeader = ({
 
   const titleContent = (
     <>
-      {isDefined(icon) && icon}
       {isDefined(title) && title}
       {tag}
     </>
