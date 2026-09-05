@@ -45,7 +45,7 @@
     "@graphiql/plugin-explorer": "^5.1.2",
     "@graphiql/react": "^0.37.6",
     "@hookform/resolvers": "^5.2.2",
-    "@huggingface/transformers": "^4.2.0",
+    "@huggingface/transformers": "^3.4.0",
     "@linaria/core": "^7.0.0",
     "@linaria/react": "^7.0.1",
     "@lingui/core": "^5.9.5",

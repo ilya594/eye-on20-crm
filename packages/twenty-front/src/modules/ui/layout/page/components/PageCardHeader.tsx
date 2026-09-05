@@ -180,7 +180,11 @@ function useSpeechRecognition() {
         const transcriber = await pipeline(
           'automatic-speech-recognition',
           'Xenova/whisper-base',
-          { dtype: 'q8' },
+          {
+            // Без dtype - используется стандартная загрузка
+            // Или можно попробовать dtype: 'q4' для более легкой модели
+            // dtype: 'q4',
+          },
         );
 
         if (!cancelled) {
